@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Analisis Valuasi Saham Luar Negeri</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#4A8BDF", // Biru tua
+              secondary: "#A0006D", // Terong
+              lightBlue: "#EFFAFD", // Biru pucat
+            },
+          },
+        },
+      };
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body class="bg-lightBlue font-roboto">
+    <div class="container mx-auto px-4 py-8">
+      <!-- Hero Section -->
+      <section class="relative bg-gradient-to-r from-blue-900 to-blue-700 text-white py-20 px-6 rounded-xl overflow-hidden mb-8">
+        <!-- Decorative elements -->
+        <div class="absolute top-0 left-0 w-full h-full opacity-10">
+          <div class="absolute top-20 left-10 w-32 h-32 bg-blue-400 rounded-full filter blur-xl"></div>
+          <div class="absolute bottom-10 right-10 w-40 h-40 bg-indigo-400 rounded-full filter blur-xl"></div>
+        </div>
+
+        <div class="relative z-10 max-w-6xl mx-auto">
+          <div class="flex flex-col lg:flex-row items-center gap-12">
+            <!-- Text content -->
+            <div class="lg:w-1/2">
+              <h1 class="text-4xl md:text-5xl font-bold leading-tight mb-6">
+                <span class="text-blue-300">Temukan</span>
+                <span class="text-blue-200">Peluang</span>
+                <span class="text-white">Investasi!</span>
+              </h1>
+
+              <p class="text-lg md:text-xl text-blue-100 mb-8 leading-relaxed">
+                Dapatkan analisis saham real-time, serta informasi diskon & valuasi untuk keputusan investasi yang lebih cerdas. Cek valuasi ribuan saham dalam satu platform. 🚀
+              </p>
+
+              <div class="flex flex-col sm:flex-row gap-4">
+                <a href="#stock-analysis" class="bg-white text-blue-900 hover:bg-blue-100 px-8 py-3 rounded-lg font-semibold transition-all transform hover:scale-105 shadow-lg text-center request-demo-btn">
+                  Analisis Sekarang
+                </a>
+                <a href="#accordion-info" class="border-2 border-blue-300 text-blue-100 hover:bg-blue-800 px-8 py-3 rounded-lg font-semibold transition-all hover:border-blue-100 text-center learn-more-btn">
+                  Pelajari Lebih Lanjut
+                </a>
+              </div>
+
+              <div class="mt-8 flex items-center space-x-4">
+                <div class="flex -space-x-2">
+                  <img src="https://randomuser.me/api/portraits/women/44.jpg" class="w-10 h-10 rounded-full border-2 border-white" />
+                  <img src="https://randomuser.me/api/portraits/men/32.jpg" class="w-10 h-10 rounded-full border-2 border-white" />
+                  <img src="https://randomuser.me/api/portraits/women/68.jpg" class="w-10 h-10 rounded-full border-2 border-white" />
+                </div>
+                <div class="text-sm text-blue-200">
+                  <p>Telah membantu <span class="font-bold">RIBUAN</span> investor profesional!</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Image/content placeholder -->
+            <div class="lg:w-1/2">
+              <div class="relative bg-white/10 backdrop-blur-sm rounded-2xl p-1 shadow-2xl">
+                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Dashboard analisis saham" class="w-full h-auto rounded-xl border border-blue-300/20" />
+                <div class="absolute -bottom-4 -right-4 bg-blue-600 px-4 py-2 rounded-lg shadow-lg">
+                  <span class="font-bold">Real-time Data</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="stock-analysis" class="relative py-16 px-6">
+        <!-- Decorative elements matching hero section -->
+        <div class="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none">
+          <div class="absolute top-1/4 left-1/4 w-24 h-24 bg-blue-400 rounded-full filter blur-xl"></div>
+          <div class="absolute bottom-1/3 right-1/3 w-32 h-32 bg-indigo-400 rounded-full filter blur-xl"></div>
+        </div>
+
+        <div class="relative z-10 max-w-4xl mx-auto">
+          <header class="text-center mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold text-blue-900 mb-4"><span class="text-blue-600">Analisis Valuasi</span> Saham Luar Negeri</h1>
+            <p class="text-lg text-blue-800 max-w-2xl mx-auto">Temukan potensi saham undervalue dan ketahui berapa besar diskonnya dengan analisis fundamental kami</p>
+          </header>
+
+          <div class="bg-white rounded-xl shadow-xl p-8 backdrop-blur-sm bg-opacity-90 border border-blue-100">
+            <div class="flex flex-col md:flex-row gap-4 items-center"> <!-- Changed from items-end to items-center -->
+                <div class="flex-grow w-full"> <!-- Added w-full -->
+                  <label for="stockCode" class="block text-blue-900 font-medium mb-2"> Cari Saham Internasional </label>
+                  <div class="relative">
+                    <input
+                      type="text"
+                      id="stockCode"
+                      placeholder="Masukkan kode saham (contoh: AAPL, GOOGL, TSLA)"
+                      class="w-full px-5 py-3 border border-blue-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-300 placeholder-blue-300"
+                    />
+                    <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                      <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                      </svg>
+                    </div>
+                  </div>
+                  <p class="mt-2 text-sm text-blue-500">Support 10,000+ saham dari bursa NYSE, NASDAQ, dan lainnya</p>
+                </div>
+                <button id="searchBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-all transform hover:scale-105 shadow-md whitespace-nowrap w-full md:w-auto mt-2 md:mt-2"> <!-- Added mt classes -->
+                  <svg class="w-5 h-5 inline mr-2 -mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                  </svg>
+                  Analisis Sekarang
+                </button>
+              </div>
+
+            <!-- Popular stocks quick select -->
+            <div class="mt-6">
+              <p class="text-sm text-blue-700 mb-2">Contoh saham populer:</p>
+              <div class="flex flex-wrap gap-2">
+                <button class="stock-chip bg-blue-100 hover:bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm transition" data-stock="AAPL">AAPL</button>
+                <button class="stock-chip bg-blue-100 hover:bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm transition" data-stock="GOOGL">GOOGL</button>
+                <button class="stock-chip bg-blue-100 hover:bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm transition" data-stock="TSLA">TSLA</button>
+                <button class="stock-chip bg-blue-100 hover:bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm transition" data-stock="AMZN">AMZN</button>
+                <button class="stock-chip bg-blue-100 hover:bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm transition" data-stock="MSFT">MSFT</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Loading and Results Section -->
+          <div id="loading" class="hidden mt-8 text-center py-12">
+            <div class="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600 mb-4"></div>
+            <p class="text-blue-700 font-medium">Memproses data saham...</p>
+          </div>
+
+          <div id="results" class="hidden mt-8">
+            <!-- Results will be inserted here by app.js -->
+          </div>
+
+          <!-- Trust indicators -->
+          <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-6 text-center text-blue-800">
+            <div class="flex items-center gap-2">
+              <svg class="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  fill-rule="evenodd"
+                  d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+              <span>Data Real-time</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <svg class="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  fill-rule="evenodd"
+                  d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+              <span>Analisis Fundamental</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <svg class="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  fill-rule="evenodd"
+                  d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+              <span>100% Privasi Terjaga</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Accordion Section -->
+      <div id="accordion-info" class="bg-white rounded-xl shadow-xl p-8 backdrop-blur-sm bg-opacity-90 border border-blue-100 mb-8">
+        <h3 class="text-3xl font-bold text-blue-900 mb-6 flex items-center">
+            <svg class="w-8 h-8 mr-3 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+            </svg>
+            Informasi Investasi
+        </h3>
+        
+        <div class="accordion space-y-4">
+            <div class="accordion-item bg-blue-50 rounded-lg overflow-hidden transition-all duration-300 hover:shadow-md">
+                <h4 class="accordion-header cursor-pointer p-5 text-lg font-semibold text-blue-900 flex justify-between items-center">
+                    <span>Apa itu DCF?</span>
+                    <svg class="w-5 h-5 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </h4>
+                <div class="accordion-body hidden px-5 pb-5 -mt-2">
+                    <div class="bg-white p-4 rounded-lg border border-blue-100">
+                        <p class="text-blue-800">Discounted Cash Flow (DCF) adalah metode penilaian yang digunakan untuk memperkirakan nilai suatu investasi berdasarkan proyeksi arus kas masa depan yang didiskontokan ke nilai saat ini.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="accordion-item bg-blue-50 rounded-lg overflow-hidden transition-all duration-300 hover:shadow-md">
+                <h4 class="accordion-header cursor-pointer p-5 text-lg font-semibold text-blue-900 flex justify-between items-center">
+                    <span>Cara Menghitung DCF</span>
+                    <svg class="w-5 h-5 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </h4>
+                <div class="accordion-body hidden px-5 pb-5 -mt-2">
+                    <div class="bg-white p-4 rounded-lg border border-blue-100">
+                        <p class="text-blue-800">Untuk menghitung DCF, Anda perlu memperkirakan arus kas masa depan, menentukan tingkat diskonto, dan mendiskontokan arus kas tersebut ke nilai saat ini.</p>
+                        <div class="mt-3 p-3 bg-blue-100 rounded text-sm text-blue-900">
+                            <strong>Rumus DCF:</strong> DCF = P/E Ratio x Net Income / Jumlah Saham Beredar (Share Outstanding)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="accordion-item bg-blue-50 rounded-lg overflow-hidden transition-all duration-300 hover:shadow-md">
+                <h4 class="accordion-header cursor-pointer p-5 text-lg font-semibold text-blue-900 flex justify-between items-center">
+                    <span>Manfaat DCF</span>
+                    <svg class="w-5 h-5 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </h4>
+                <div class="accordion-body hidden px-5 pb-5 -mt-2">
+                    <div class="bg-white p-4 rounded-lg border border-blue-100">
+                        <p class="text-blue-800">DCF membantu investor untuk memahami nilai intrinsik suatu aset dan membuat keputusan investasi yang lebih baik berdasarkan analisis yang mendalam.</p>
+                        <ul class="mt-3 space-y-2">
+                            <li class="flex items-start">
+                                <svg class="w-4 h-4 mt-1 mr-2 text-blue-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span>Menghitung nilai intrinsik perusahaan</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-4 h-4 mt-1 mr-2 text-blue-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span>Membandingkan dengan harga pasar saat ini</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-4 h-4 mt-1 mr-2 text-blue-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span>Mengidentifikasi saham yang undervalued</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="accordion-item bg-blue-50 rounded-lg overflow-hidden transition-all duration-300 hover:shadow-md">
+                <h4 class="accordion-header cursor-pointer p-5 text-lg font-semibold text-blue-900 flex justify-between items-center">
+                    <span>Informasi Lainnya</span>
+                    <svg class="w-5 h-5 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </h4>
+                <div class="accordion-body hidden px-5 pb-5 -mt-2">
+                    <div class="bg-white p-4 rounded-lg border border-blue-100">
+                        <p class="text-blue-800">Metode DCF sangat berguna dalam analisis valuasi saham dan dapat digunakan untuk berbagai jenis investasi, termasuk saham, obligasi, dan proyek bisnis.</p>
+                        <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-blue-100 p-3 rounded-lg">
+                                <h5 class="font-bold text-blue-900 mb-1">Keunggulan DCF</h5>
+                                <p class="text-sm text-blue-800">Mempertimbangkan nilai waktu uang dan arus kas masa depan</p>
+                            </div>
+                            <div class="bg-blue-100 p-3 rounded-lg">
+                                <h5 class="font-bold text-blue-900 mb-1">Keterbatasan</h5>
+                                <p class="text-sm text-blue-800">Bergantung pada asumsi tentang pertumbuhan dan tingkat diskonto</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add this just before the closing </body> tag in index.html -->
+    <div id="chatbot-container" class="fixed bottom-6 right-6 z-50">
+      <!-- Chatbot button -->
+      <button id="chatbot-toggle" class="bg-primary hover:bg-blue-700 text-white rounded-full w-16 h-16 flex items-center justify-center shadow-lg transition-all">
+        <i class="fas fa-comment-dots text-2xl"></i>
+      </button>
+    
+      <!-- Chatbot popup -->
+      <div id="chatbot-popup" class="hidden absolute bottom-20 right-0 w-96 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden flex flex-col" style="height: 600px;">
+        <!-- Chat header -->
+        <div class="bg-gradient-to-r from-blue-600 to-blue-500 text-white p-4 flex justify-between items-center">
+          <div class="flex items-center gap-3">
+            <div class="bg-white/20 p-2 rounded-full">
+              <i class="fas fa-robot text-lg"></i>
+            </div>
+            <div>
+              <h3 class="font-bold">InvestAI Assistant</h3>
+              <p class="text-xs opacity-80">Online</p>
+            </div>
+          </div>
+          <button id="chatbot-close" class="text-white hover:text-gray-200 p-1">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      
+        <!-- Chat messages container -->
+        <div id="chat-messages" class="flex-1 flex flex-col gap-3 p-4 overflow-y-auto bg-gray-50">
+          <div class="chat-message bot-message">
+            <div class="font-semibold text-blue-600 mb-1">InvestAI Assistant</div>
+            Halo! Saya asisten virtual untuk analisis saham. Saya bisa membantu Anda:
+            <ul class="mt-2 space-y-1">
+              <li>• Menjelaskan konsep investasi</li>
+              <li>• Menganalisis saham tertentu</li>
+              <li>• Memberikan tips valuasi</li>
+            </ul>
+            Ada yang bisa saya bantu?
+          </div>
+        </div>
+        
+        <!-- Chat input -->
+        <div class="p-4 border-t border-gray-200 bg-white">
+          <div class="flex gap-2">
+            <input 
+              id="chat-input" 
+              type="text" 
+              placeholder="Tulis pesan Anda..." 
+              class="flex-1 border border-gray-200 rounded-full px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+            >
+            <button 
+              id="chat-send" 
+              class="bg-blue-600 hover:bg-blue-700 text-white w-12 h-12 rounded-full flex items-center justify-center transition"
+            >
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </div>
+          <p class="text-xs text-gray-500 mt-2 text-center">InvestAI Assistant — Powered by Gemini AI</p>
+        </div>
+      </div>
+    </div>
+    
+    <script src="app.js"></script>
+  </body>
+</html>
