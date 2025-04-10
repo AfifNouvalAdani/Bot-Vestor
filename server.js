@@ -91,27 +91,31 @@ app.get("/api/stock/:symbol", async (req, res) => {
 
 app.get("/api/historical/:symbol", async (req, res) => {
   const stockCode = req.params.symbol;
-  const url = `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${stockCode}&interval=5min&apikey=${process.env.ALPHA_VANTAGE_API_KEY}`;
+  const url = `https://api.twelvedata.com/time_series?symbol=${stockCode}&interval=5min&outputsize=30&apikey=${process.env.TWELVE_DATA_API_KEY}`;
 
   try {
     const response = await axios.get(url);
-    const timeSeries = response.data["Time Series (5min)"];
+    const data = response.data;
 
-    // Mengubah data menjadi format yang lebih mudah digunakan
+    if (data.status === "error") {
+      return res.status(500).json({ error: data.message });
+    }
+
     const historicalData = {
       s: "ok",
-      c: [], // Harga penutupan
-      t: [], // Timestamp
+      c: [], // close prices
+      t: [], // timestamp (UNIX)
     };
 
-    for (const [timestamp, data] of Object.entries(timeSeries)) {
-      historicalData.c.push(parseFloat(data["4. close"])); // Harga penutupan
-      historicalData.t.push(new Date(timestamp).getTime() / 1000); // Timestamp dalam detik
+    for (const point of data.values.reverse()) {
+      historicalData.c.push(parseFloat(point.close));
+      historicalData.t.push(new Date(point.datetime).getTime() / 1000);
     }
 
     res.json(historicalData);
   } catch (error) {
-    res.status(500).json({ error: "Gagal mengambil data historis dari Alpha Vantage" });
+    console.error("Fetch historical error:", error.message);
+    res.status(500).json({ error: "Gagal mengambil data historis dari Twelve Data" });
   }
 });
 
