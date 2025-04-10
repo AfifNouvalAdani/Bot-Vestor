@@ -345,7 +345,7 @@ async function renderPriceChart(stockCode) {
   if (!ctx || !stockCode) return;
 
   try {
-    const response = await fetch(`http://localhost:3000/api/historical/${stockCode}`);
+    const response = await fetch(`${API_BASE_URL}/api/historical/${stockCode}`);
     const historicalData = await response.json();
 
     if (historicalData.s === "ok") {
