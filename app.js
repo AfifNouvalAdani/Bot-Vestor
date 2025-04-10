@@ -8,6 +8,7 @@ const chatbotClose = document.getElementById("chatbot-close");
 const chatInput = document.getElementById("chat-input");
 const chatSend = document.getElementById("chat-send");
 const chatMessages = document.getElementById("chat-messages");
+const API_BASE_URL = window.location.origin;
 
 function init() {
   setupEventListeners();
@@ -90,7 +91,7 @@ function addMessage(text, sender) {
 
 async function fetchGeminiResponse(prompt) {
   try {
-    const response = await fetch("http://localhost:3000/api/gemini", {
+    const response = await fetch(`${API_BASE_URL}/api/gemini`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ prompt }),
@@ -222,7 +223,7 @@ function showLoadingState() {
 
 async function fetchStockData(stockCode) {
   try {
-    const response = await fetch(`http://localhost:3000/api/stock/${stockCode}`);
+    const response = await fetch(`${API_BASE_URL}/api/stock/${stockCode}`);
     if (!response.ok) {
       throw new Error("Gagal mengambil data dari API");
     }
