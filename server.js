@@ -2,11 +2,22 @@ const express = require("express");
 const yahooFinance = require("yahoo-finance2").default;
 const axios = require("axios");
 const cors = require("cors");
-require('dotenv').config(); 
+require("dotenv").config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+const path = require("path");
+
+// Sajikan file statis (seperti index.html, styles.css, dll)
+app.use(express.static(__dirname));
+
+// Handler untuk root "/"
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "index.html"));
+});
+
 const PORT = 3000;
 
 // Endpoint Gemini yang sudah diperbarui
