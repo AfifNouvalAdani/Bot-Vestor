@@ -51,39 +51,22 @@ app.post("/api/gemini", async (req, res) => {
 app.get("/api/stock/:symbol", async (req, res) => {
   const stockCode = req.params.symbol;
   try {
-    const url = `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${stockCode}&apikey=${process.env.ALPHA_VANTAGE_API_KEY}`;
-    const response = await axios.get(url);
-    const data = response.data;
-
-    if (!data || Object.keys(data).length === 0) {
-      return res.status(404).json({ error: "Saham tidak ditemukan" });
-    }
-
+    const overviewUrl = `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${stockCode}&apikey=${process.env.ALPHA_VANTAGE_API_KEY}`;
     const priceUrl = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${stockCode}&apikey=${process.env.ALPHA_VANTAGE_API_KEY}`;
-    const priceResponse = await axios.get(priceUrl);
-    const priceData = priceResponse.data["Global Quote"];
 
+    const [overviewRes, priceRes] = await Promise.all([
+      axios.get(overviewUrl),
+      axios.get(priceUrl)
+    ]);
+
+    // Kirim raw response untuk debug
     res.json({
-      code: stockCode,
-      name: data.Name || "N/A",
-      sector: data.Sector || "N/A",
-      currentPrice: parseFloat(priceData["05. price"]) || 0,
-      eps: parseFloat(data.EPS) || 0,
-      bookValue: parseFloat(data.BookValue) || 0,
-      peRatio: parseFloat(data.PERatio) || 0,
-      pbRatio: parseFloat(data.PriceToBookRatio) || 0,
-      psRatio: parseFloat(data.PriceToSalesRatioTTM) || 0,
-      sharesOutstanding: parseFloat(data.SharesOutstanding) || 0,
-      profitMargin: parseFloat(data.ProfitMargin) || 0,
-      returnOnEquity: parseFloat(data.ReturnOnEquityTTM) || 0,
-      netIncome: parseFloat(data.NetIncomeTTM) || 0,
-      debtToEquity: parseFloat(data.DebtToEquityRatio) || 0,
-      epsCurrentYear: parseFloat(data.EPS) || 0,
-      dividendYield: parseFloat(data.DividendYield) || 0,
+      overview: overviewRes.data,
+      price: priceRes.data
     });
+
   } catch (error) {
-    console.error("Stock error:", error.message);
-    res.status(500).json({ error: "Gagal mengambil data saham", detail: error.message });
+    res.status(500).json({ error: error.message });
   }
 });
 
