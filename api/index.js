@@ -48,35 +48,42 @@ app.post("/api/gemini", async (req, res) => {
   }
 });
 
-// Endpoint untuk mengambil data saham
 app.get("/api/stock/:symbol", async (req, res) => {
   const stockCode = req.params.symbol;
   try {
-    const result = await yahooFinance.quote(stockCode);
+    const url = `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${stockCode}&apikey=${process.env.ALPHA_VANTAGE_API_KEY}`;
+    const response = await axios.get(url);
+    const data = response.data;
+
+    if (!data || Object.keys(data).length === 0) {
+      return res.status(404).json({ error: "Saham tidak ditemukan" });
+    }
+
+    const priceUrl = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${stockCode}&apikey=${process.env.ALPHA_VANTAGE_API_KEY}`;
+    const priceResponse = await axios.get(priceUrl);
+    const priceData = priceResponse.data["Global Quote"];
+
     res.json({
       code: stockCode,
-      name: result.longName || "N/A",
-      sector: result.region || "N/A",
-      currentPrice: result.regularMarketPrice || 0,
-      eps: result.trailingEps || 0,
-      bookValue: result.bookValue || 0,
-      peRatio: result.trailingPE || 0,
-      pbRatio: result.priceToBook || 0,
-      psRatio: result.priceToSales || 0,
-      sharesOutstanding: result.sharesOutstanding || 0,
-      profitMargin: result.profitMargin || 0,
-      returnOnEquity: result.returnOnEquity || 0,
-      netIncome: result.netIncome || 0,
-      debtToEquity: result.debtToEquity || 0,
-      epsCurrentYear: result.epsCurrentYear || 0,
-      dividendYield: (result.dividendYield || 0) * 1,
+      name: data.Name || "N/A",
+      sector: data.Sector || "N/A",
+      currentPrice: parseFloat(priceData["05. price"]) || 0,
+      eps: parseFloat(data.EPS) || 0,
+      bookValue: parseFloat(data.BookValue) || 0,
+      peRatio: parseFloat(data.PERatio) || 0,
+      pbRatio: parseFloat(data.PriceToBookRatio) || 0,
+      psRatio: parseFloat(data.PriceToSalesRatioTTM) || 0,
+      sharesOutstanding: parseFloat(data.SharesOutstanding) || 0,
+      profitMargin: parseFloat(data.ProfitMargin) || 0,
+      returnOnEquity: parseFloat(data.ReturnOnEquityTTM) || 0,
+      netIncome: parseFloat(data.NetIncomeTTM) || 0,
+      debtToEquity: parseFloat(data.DebtToEquityRatio) || 0,
+      epsCurrentYear: parseFloat(data.EPS) || 0,
+      dividendYield: parseFloat(data.DividendYield) || 0,
     });
   } catch (error) {
-    console.error("Stock error detail:", error);
-    res.status(500).json({ 
-      error: "Gagal mengambil data dari Yahoo Finance",
-      detail: error.message
-    });
+    console.error("Stock error:", error.message);
+    res.status(500).json({ error: "Gagal mengambil data saham", detail: error.message });
   }
 });
 
