@@ -8,19 +8,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const path = require("path");
-
-// Sajikan file statis (seperti index.html, styles.css, dll)
-app.use(express.static(__dirname));
-
-// Handler untuk root "/"
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
-});
-
-const PORT = 3000;
-
-// Endpoint Gemini yang sudah diperbarui
+// Endpoint Gemini
 app.post("/api/gemini", async (req, res) => {
   try {
     const { prompt } = req.body;
@@ -48,10 +36,9 @@ app.post("/api/gemini", async (req, res) => {
 
     let responseText = response.data.candidates[0].content.parts[0].text;
 
-    // Clean up any odd formatting that might come through
     responseText = responseText
-      .replace(/^\s*\[INST\].*?\[\/INST\]\s*/i, "") // Remove any remaining [INST] tags
-      .replace(/\*\*\*/g, "**") // Fix triple asterisks
+      .replace(/^\s*\[INST\].*?\[\/INST\]\s*/i, "")
+      .replace(/\*\*\*/g, "**")
       .trim();
 
     res.json({ response: responseText });
@@ -74,13 +61,13 @@ app.get("/api/stock/:symbol", async (req, res) => {
       eps: result.trailingEps || 0,
       bookValue: result.bookValue || 0,
       peRatio: result.trailingPE || 0,
-      pbRatio: result.priceToBook || 0, // Price/Book
-      psRatio: result.priceToSales || 0, // Price/Sales
-      sharesOutstanding: result.sharesOutstanding || 0, // Share Outstanding
-      profitMargin: result.profitMargin || 0, // Profit Margin
-      returnOnEquity: result.returnOnEquity || 0, // Return on Equity
-      netIncome: result.netIncome || 0, // Net Income Avi to Common (ttm)
-      debtToEquity: result.debtToEquity || 0, // Total Debt/Equity (mrq)
+      pbRatio: result.priceToBook || 0,
+      psRatio: result.priceToSales || 0,
+      sharesOutstanding: result.sharesOutstanding || 0,
+      profitMargin: result.profitMargin || 0,
+      returnOnEquity: result.returnOnEquity || 0,
+      netIncome: result.netIncome || 0,
+      debtToEquity: result.debtToEquity || 0,
       epsCurrentYear: result.epsCurrentYear || 0,
       dividendYield: (result.dividendYield || 0) * 1,
     });
@@ -89,6 +76,7 @@ app.get("/api/stock/:symbol", async (req, res) => {
   }
 });
 
+// Endpoint untuk data historis
 app.get("/api/historical/:symbol", async (req, res) => {
   const stockCode = req.params.symbol;
   const url = `https://api.twelvedata.com/time_series?symbol=${stockCode}&interval=5min&outputsize=30&apikey=${process.env.TWELVE_DATA_API_KEY}`;
@@ -103,8 +91,8 @@ app.get("/api/historical/:symbol", async (req, res) => {
 
     const historicalData = {
       s: "ok",
-      c: [], // close prices
-      t: [], // timestamp (UNIX)
+      c: [],
+      t: [],
     };
 
     for (const point of data.values.reverse()) {
@@ -119,7 +107,4 @@ app.get("/api/historical/:symbol", async (req, res) => {
   }
 });
 
-// Menjalankan server
-app.listen(PORT, () => {
-  console.log(`Server berjalan di http://localhost:${PORT}`);
-});
+module.exports = app;
