@@ -48,25 +48,31 @@ app.post("/api/gemini", async (req, res) => {
   }
 });
 
+// Endpoint untuk mengambil data saham
 app.get("/api/stock/:symbol", async (req, res) => {
   const stockCode = req.params.symbol;
   try {
-    const overviewUrl = `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${stockCode}&apikey=${process.env.ALPHA_VANTAGE_API_KEY}`;
-    const priceUrl = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${stockCode}&apikey=${process.env.ALPHA_VANTAGE_API_KEY}`;
-
-    const [overviewRes, priceRes] = await Promise.all([
-      axios.get(overviewUrl),
-      axios.get(priceUrl)
-    ]);
-
-    // Kirim raw response untuk debug
+    const result = await yahooFinance.quote(stockCode);
     res.json({
-      overview: overviewRes.data,
-      price: priceRes.data
+      code: stockCode,
+      name: result.longName || "N/A",
+      sector: result.region || "N/A",
+      currentPrice: result.regularMarketPrice || 0,
+      eps: result.trailingEps || 0,
+      bookValue: result.bookValue || 0,
+      peRatio: result.trailingPE || 0,
+      pbRatio: result.priceToBook || 0,
+      psRatio: result.priceToSales || 0,
+      sharesOutstanding: result.sharesOutstanding || 0,
+      profitMargin: result.profitMargin || 0,
+      returnOnEquity: result.returnOnEquity || 0,
+      netIncome: result.netIncome || 0,
+      debtToEquity: result.debtToEquity || 0,
+      epsCurrentYear: result.epsCurrentYear || 0,
+      dividendYield: (result.dividendYield || 0) * 1,
     });
-
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: "Gagal mengambil data dari Yahoo Finance" });
   }
 });
 
