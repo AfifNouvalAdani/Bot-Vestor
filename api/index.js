@@ -72,7 +72,11 @@ app.get("/api/stock/:symbol", async (req, res) => {
       dividendYield: (result.dividendYield || 0) * 1,
     });
   } catch (error) {
-    res.status(500).json({ error: "Gagal mengambil data dari Yahoo Finance" });
+    console.error("Stock error detail:", error);
+    res.status(500).json({ 
+      error: "Gagal mengambil data dari Yahoo Finance",
+      detail: error.message
+    });
   }
 });
 
